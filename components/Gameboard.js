@@ -40,6 +40,15 @@ export default function Gameboard() {
     return selectedDices[i] ? "black" : "steelblue";
   };
 
+  const getDicePointsColor = (i) => {
+    return selectedDicePoints[i] && !gameEndStatus ? "black" : "steelblue";
+  };
+
+  const getSpotTotal = (i) => {
+    console.log(i);
+    return dicePointsTotal[i];
+  };
+
   const selectDice = (i) => {
     if (nbrOfThrowsLeft < NBR_OF_THROWS && !gameEndStatus) {
       let dices = [...selectedDices];
@@ -48,6 +57,20 @@ export default function Gameboard() {
     } else {
       setStatus("You have to throw dices first");
     }
+  };
+
+  const selectDicePoints = (i) => {
+    let selectedPoints = [...selectedDicePoints];
+    let points = [...dicePointsTotal];
+    selectedDicePoints[i] = true;
+    let nbrOfDices = diceSpots.reduce(
+      (total, x) => (x === i + 1 ? total + 1 : total),
+      0
+    );
+    points[i] = nbrOfDices * (i + 1);
+    setDicePointsTotal(points);
+    setSelectedDicePoints(selectedPoints);
+    return points[i];
   };
 
   const throwDices = () => {
@@ -73,6 +96,15 @@ export default function Gameboard() {
     setStatus("Select and throw dices again.");
   };
 
+  const pointsRow = [];
+  for (let spot = 0; spot < MAX_SPOT; spot++) {
+    pointsRow.push(
+      <Col key={"pointsRow" + spot}>
+        <Text key={"pointsRow" + spot}>{getSpotTotal(spot)}</Text>
+      </Col>
+    );
+  }
+
   const dicesRow = [];
   for (let dice = 0; dice < NBR_OF_DICES; dice++) {
     dicesRow.push(
@@ -88,6 +120,26 @@ export default function Gameboard() {
       </Col>
     );
   }
+
+  const pointsToSelectRow = [];
+  for (let diceButton = 0; diceButton < MAX_SPOT; diceButton++) {
+    pointsToSelectRow.push(
+      <Col key={"buttonsRow" + diceButton}>
+        <Pressable
+          key={"buttonsRow" + diceButton}
+          onPress={() => selectDicePoints(diceButton)}
+        >
+          <MaterialCommunityIcons
+            name={"numeric-" + (diceButton + 1) + "-circle"}
+            key={"buttonsRow" + diceButton}
+            size={35}
+            color={getDicePointsColor(diceButton)}
+          />
+        </Pressable>
+      </Col>
+    );
+  }
+
   return (
     <>
       <Header />
@@ -98,6 +150,12 @@ export default function Gameboard() {
         </Container>
         <Text>Throws left: {nbrOfThrowsLeft}</Text>
         <Text>{status}</Text>
+        <Container fluid>
+          <Row>{pointsRow}</Row>
+        </Container>
+        <Container fluid>
+          <Row>{pointsToSelectRow}</Row>
+        </Container>
         <Pressable onPress={() => throwDices()}>
           <Text>THROW DICES</Text>
         </Pressable>
