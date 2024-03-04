@@ -16,7 +16,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 let board = [];
 
-export default function Gameboard() {
+export default function Gameboard({ navigation, route }) {
   const [playerName, setPlayerName] = useState("");
   const [nbrOfThrowsLeft, setNbrOfThrowsLeft] = useState(NBR_OF_THROWS);
   const [status, setStatus] = useState("Throw dices");
@@ -35,6 +35,12 @@ export default function Gameboard() {
   const [dicePointsTotal, setDicePointsTotal] = useState(
     new Array(MAX_SPOT).fill(0)
   );
+
+  useEffect(() => {
+    if (playerName === "" && route.params?.player) {
+      setPlayerName(route.params.player);
+    }
+  }, []);
 
   const getDiceColor = (i) => {
     return selectedDices[i] ? "black" : "steelblue";
@@ -60,17 +66,27 @@ export default function Gameboard() {
   };
 
   const selectDicePoints = (i) => {
-    let selectedPoints = [...selectedDicePoints];
-    let points = [...dicePointsTotal];
-    selectedDicePoints[i] = true;
-    let nbrOfDices = diceSpots.reduce(
-      (total, x) => (x === i + 1 ? total + 1 : total),
-      0
-    );
-    points[i] = nbrOfDices * (i + 1);
-    setDicePointsTotal(points);
-    setSelectedDicePoints(selectedPoints);
-    return points[i];
+    if (nbrOfThrowsLeft === 0) {
+      let selected = [...selectedDices];
+      let selectedPoints = [...selectedDicePoints];
+      let points = [...dicePointsTotal];
+      if (!selectedPoints[i]) {
+        selectedDicePoints[i] = true;
+        let nbrOfDices = diceSpots.reduce(
+          (total, x) => (x === i + 1 ? total + 1 : total),
+          0
+        );
+        points[i] = nbrOfDices * (i + 1);
+        setDicePointsTotal(points);
+        setSelectedDicePoints(selectedPoints);
+        setNbrOfThrowsLeft(NBR_OF_THROWS);
+        return points[i];
+      } else {
+        setStatus("You already selected points for " + (i + 1));
+      }
+    } else {
+      setStatus("Throw " + NBR_OF_THROWS + " times before setting points.");
+    }
   };
 
   const throwDices = () => {
@@ -159,6 +175,7 @@ export default function Gameboard() {
         <Pressable onPress={() => throwDices()}>
           <Text>THROW DICES</Text>
         </Pressable>
+        <Text>Player: {playerName}</Text>
       </View>
       <Footer />
     </>
