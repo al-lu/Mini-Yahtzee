@@ -36,6 +36,20 @@ export default function Gameboard() {
     new Array(MAX_SPOT).fill(0)
   );
 
+  const getDiceColor = (i) => {
+    return selectedDices[i] ? "black" : "steelblue";
+  };
+
+  const selectDice = (i) => {
+    if (nbrOfThrowsLeft < NBR_OF_THROWS && !gameEndStatus) {
+      let dices = [...selectedDices];
+      dices[i] = selectedDices[i] ? false : true;
+      setSelectedDices(dices);
+    } else {
+      setStatus("You have to throw dices first");
+    }
+  };
+
   const throwDices = () => {
     if (nbrOfThrowsLeft === 0 && !gameEndStatus) {
       setStatus("Select your points before next throw");
@@ -63,16 +77,13 @@ export default function Gameboard() {
   for (let dice = 0; dice < NBR_OF_DICES; dice++) {
     dicesRow.push(
       <Col key={"dice" + dice}>
-        <Pressable
-          key={"dice" + dice}
-          //</Col>onPress={() => selectDice(dice)}
-        >
+        <Pressable key={"dice" + dice} onPress={() => selectDice(dice)}>
           <MaterialCommunityIcons
             name={board[dice]}
             key={"dice" + dice}
             size={50}
-            //color={getDiceColor(dice)}
-          ></MaterialCommunityIcons>
+            color={getDiceColor(dice)}
+          />
         </Pressable>
       </Col>
     );
