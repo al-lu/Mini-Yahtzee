@@ -13,6 +13,7 @@ import {
 } from "../constants/Game";
 import { Container, Row, Col } from "react-native-flex-grid";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Style from "../styles/Style";
 
 let board = [];
 
@@ -43,11 +44,11 @@ export default function Gameboard({ navigation, route }) {
   }, []);
 
   const getDiceColor = (i) => {
-    return selectedDices[i] ? "black" : "steelblue";
+    return selectedDices[i] ? "black" : "white";
   };
 
   const getDicePointsColor = (i) => {
-    return selectedDicePoints[i] && !gameEndStatus ? "black" : "steelblue";
+    return selectedDicePoints[i] && !gameEndStatus ? "black" : "white";
   };
 
   const getSpotTotal = (i) => {
@@ -116,7 +117,9 @@ export default function Gameboard({ navigation, route }) {
   for (let spot = 0; spot < MAX_SPOT; spot++) {
     pointsRow.push(
       <Col key={"pointsRow" + spot}>
-        <Text key={"pointsRow" + spot}>{getSpotTotal(spot)}</Text>
+        <Text style={Style.pointsRowText} key={"pointsRow" + spot}>
+          {getSpotTotal(spot)}
+        </Text>
       </Col>
     );
   }
@@ -148,7 +151,7 @@ export default function Gameboard({ navigation, route }) {
           <MaterialCommunityIcons
             name={"numeric-" + (diceButton + 1) + "-circle"}
             key={"buttonsRow" + diceButton}
-            size={35}
+            size={45}
             color={getDicePointsColor(diceButton)}
           />
         </Pressable>
@@ -159,23 +162,26 @@ export default function Gameboard({ navigation, route }) {
   return (
     <>
       <Header />
-      <View>
-        <Text>Gameboard will be here..</Text>
+      <View style={Style.gameContainer}>
         <Container fluid>
-          <Row>{dicesRow}</Row>
+          <Row style={Style.row}>{dicesRow}</Row>
         </Container>
-        <Text>Throws left: {nbrOfThrowsLeft}</Text>
-        <Text>{status}</Text>
+        <Text style={Style.headingTextPrimary}>
+          Throws left: {nbrOfThrowsLeft}
+        </Text>
+        <Text style={Style.headingTextPrimary}>{status}</Text>
+
         <Container fluid>
           <Row>{pointsRow}</Row>
         </Container>
         <Container fluid>
           <Row>{pointsToSelectRow}</Row>
         </Container>
-        <Pressable onPress={() => throwDices()}>
-          <Text>THROW DICES</Text>
+
+        <Pressable style={Style.button} onPress={() => throwDices()}>
+          <Text style={Style.buttonText}>THROW DICES</Text>
         </Pressable>
-        <Text>Player: {playerName}</Text>
+        <Text style={Style.headingTextPrimary}>Player: {playerName}</Text>
       </View>
       <Footer />
     </>

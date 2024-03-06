@@ -4,6 +4,8 @@ import Scoreboard from "./Scoreboard";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { ColorScheme } from "../colors/ColorScheme";
+import TopAppBar from "./TopAppBar";
 
 const Tab = createBottomTabNavigator();
 
@@ -13,18 +15,19 @@ export default function Navigation() {
       <Tab.Navigator
         sceneContainerStyle={{ backgroundColor: "transparent" }}
         screenOptions={({ route }) => ({
+          headerShown: true,
+          header: (props) => <TopAppBar {...props} />,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
             if (route.name === "Home") {
-              iconName = focused ? "information" : "information-outline";
+              iconName = focused ? "home-variant" : "home-variant-outline";
             } else if (route.name === "Gameboard") {
               iconName = focused ? "dice-multiple" : "dice-multiple-outline";
             } else if (route.name === "Scoreboard") {
               iconName = focused ? "view-list" : "view-list-outline";
             }
 
-            // You can return any component that you like here!
             return (
               <MaterialCommunityIcons
                 name={iconName}
@@ -33,15 +36,21 @@ export default function Navigation() {
               />
             );
           },
-          /* Change colors */
-          tabBarActiveTintColor: "steelblue",
-          tabBarInactiveTintColor: "gray",
+          tabBarActiveTintColor: ColorScheme.colors.tabBarActiveTintColor,
+          tabBarInactiveTintColor: ColorScheme.colors.tabBarInactiveTintColor,
+          tabBarActiveBackgroundColor:
+            ColorScheme.colors.tabBarActiveBackgroundColor,
+          tabBarStyle: {
+            backgroundColor: ColorScheme.colors.tabBarBackgroundColor,
+          },
         })}
       >
         <Tab.Screen
           name="Home"
           component={Home}
-          options={{ tabBarStyle: { display: "none" } }}
+          options={{
+            tabBarStyle: { display: "none" },
+          }}
         />
         <Tab.Screen name="Gameboard" component={Gameboard} />
         <Tab.Screen name="Scoreboard" component={Scoreboard} />
