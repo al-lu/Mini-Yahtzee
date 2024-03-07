@@ -164,58 +164,8 @@ export default StyleSheet.create({
     marginBottom: 5,
   },
 
-  /* gameboard: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  gameinfo: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-  },
-  gameinfotext: {
-    fontSize: 20,
-    marginTop: 10,
-  },
-  gameinfotextinput: {
-    textAlign: "center",
-    fontSize: 20,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  rulesofgametitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  gamerules: {
-    textAlign: "justify",
-    marginBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-  goodluck: {
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  row: {
+  throwDicesButton: {
     marginTop: 20,
-    padding: 10,
+    marginBottom: 40,
   },
-  flex: {
-    flexDirection: "row",
-  },
-  button: {
-    flexDirection: "row",
-    padding: 10,
-    backgroundColor: "steelblue",
-    width: 85,
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 15,
-    fontWeight: "bold",
-  },*/
 });

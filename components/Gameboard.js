@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Pressable } from "react-native";
+import { Text, View, Pressable, Animated } from "react-native";
 import { useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -14,65 +14,141 @@ import {
 import { Container, Row, Col } from "react-native-flex-grid";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Style from "../styles/Style";
+import { ColorScheme } from "../colors/ColorScheme";
+import { Button } from "react-native-paper";
 
 let board = [];
 
 export default function Gameboard({ navigation, route }) {
+  // States
   const [playerName, setPlayerName] = useState("");
   const [nbrOfThrowsLeft, setNbrOfThrowsLeft] = useState(NBR_OF_THROWS);
-  const [status, setStatus] = useState("Throw dices");
+  const [bonusPointsStatus, setBonusPointsStatus] = useState(
+    `You are ${BONUS_POINTS_LIMIT} points away from bonus`
+  );
+  const [status, setStatus] = useState("Start the game by throwing dices.");
+  const [gameStartStatus, setGameStartStatus] = useState(false);
   const [gameEndStatus, setGameEndStatus] = useState(false);
-
   const [selectedDices, setSelectedDices] = useState(
     new Array(NBR_OF_DICES).fill(false)
   );
-
   const [diceSpots, setDicesSpots] = useState(new Array(NBR_OF_DICES).fill(0));
-
   const [selectedDicePoints, setSelectedDicePoints] = useState(
     new Array(MAX_SPOT).fill(false)
   );
-
   const [dicePointsTotal, setDicePointsTotal] = useState(
     new Array(MAX_SPOT).fill(0)
   );
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [animatedValue] = useState(new Animated.Value(0));
 
+  const interpolatedRotateY = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"],
+  });
+
+  const startAnimation = (i) => {
+    const animationSequence = Animated.sequence([
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(animatedValue, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]);
+
+    animationSequence.start();
+  };
+
+  // Handle player name from route params
   useEffect(() => {
     if (playerName === "" && route.params?.player) {
       setPlayerName(route.params.player);
     }
   }, []);
 
+  // Update state after dice selection
+  useEffect(() => {
+    const updateStateAfterDiceSelection = () => {
+      selectedDices.fill(false);
+
+      setStatus("Throw dices.");
+      let totalPoints = dicePointsTotal.reduce((sum, point) => sum + point, 0);
+      let remainingPointsToBonus = BONUS_POINTS_LIMIT - totalPoints;
+
+      if (remainingPointsToBonus > 0) {
+        setTotalPoints(totalPoints);
+        setBonusPointsStatus(
+          `You are ${remainingPointsToBonus} points away from bonus`
+        );
+      } else {
+        const newTotalPoints = totalPoints + BONUS_POINTS;
+        setTotalPoints(newTotalPoints);
+        setBonusPointsStatus(`Congrats! Bonus points (50) added`);
+      }
+
+      const isEveryPointSelected = selectedDicePoints.every(
+        (selectedPoint) => selectedPoint
+      );
+      if (isEveryPointSelected) {
+        setGameEndStatus(true);
+      }
+    };
+
+    // Check if any point is selected
+    if (selectedDicePoints.some((point) => point)) {
+      updateStateAfterDiceSelection();
+    }
+  }, [selectedDicePoints]);
+
+  // Updates the game status to "GAME OVER" when all points are selected
+  useEffect(() => {
+    if (gameEndStatus) {
+      setStatus("GAME OVER. All points selected.");
+    }
+  }, [gameEndStatus]);
+
+  // Returns the color for a dice based on its selection state
   const getDiceColor = (i) => {
-    return selectedDices[i] ? "black" : "white";
+    return selectedDices[i]
+      ? ColorScheme.colors.iconColorPrimary
+      : ColorScheme.colors.iconColorSecondary;
   };
 
+  // Returns the color for a dicePoint based on its selection state and game end status
   const getDicePointsColor = (i) => {
-    return selectedDicePoints[i] && !gameEndStatus ? "black" : "white";
+    return selectedDicePoints[i] && !gameEndStatus
+      ? ColorScheme.colors.iconColorTertiary
+      : ColorScheme.colors.iconColorSecondary;
   };
 
+  // Returns the total number of spots rolled for a specific point value
   const getSpotTotal = (i) => {
-    console.log(i);
     return dicePointsTotal[i];
   };
 
+  // Handle selecting a dice and update its selection state
   const selectDice = (i) => {
     if (nbrOfThrowsLeft < NBR_OF_THROWS && !gameEndStatus) {
       let dices = [...selectedDices];
       dices[i] = selectedDices[i] ? false : true;
       setSelectedDices(dices);
     } else {
-      setStatus("You have to throw dices first");
+      setStatus("You have to throw dices first.");
     }
   };
 
+  // Handles selecting a dice point and updates its selection state and points total
   const selectDicePoints = (i) => {
     if (nbrOfThrowsLeft === 0) {
-      let selected = [...selectedDices];
       let selectedPoints = [...selectedDicePoints];
       let points = [...dicePointsTotal];
       if (!selectedPoints[i]) {
-        selectedDicePoints[i] = true;
+        selectedPoints[i] = true;
         let nbrOfDices = diceSpots.reduce(
           (total, x) => (x === i + 1 ? total + 1 : total),
           0
@@ -90,9 +166,12 @@ export default function Gameboard({ navigation, route }) {
     }
   };
 
+  // Handle throwing dice and updates game state and dice spots
   const throwDices = () => {
+    setGameStartStatus(true);
+
     if (nbrOfThrowsLeft === 0 && !gameEndStatus) {
-      setStatus("Select your points before next throw");
+      setStatus("Select your points before the next throw.");
       return 1;
     } else if (nbrOfThrowsLeft === 0 && gameEndStatus) {
       setGameEndStatus(false);
@@ -101,16 +180,35 @@ export default function Gameboard({ navigation, route }) {
     }
 
     let spots = [...diceSpots];
+
     for (let i = 0; i < NBR_OF_DICES; i++) {
       if (!selectedDices[i]) {
-        let randomNumber = Math.floor(Math.random() * MAX_SPOT + 1);
+        // Animate only unselected dice
+        startAnimation(i);
+        let randomNumber = Math.floor(Math.random() * 6 + 1);
         board[i] = "dice-" + randomNumber;
         spots[i] = randomNumber;
       }
     }
-    setNbrOfThrowsLeft(nbrOfThrowsLeft - 1);
+
+    setNbrOfThrowsLeft((prev) => prev - 1);
     setDicesSpots(spots);
     setStatus("Select and throw dices again.");
+  };
+
+  const resetGameState = () => {
+    // Reset everything
+    setGameStartStatus(false);
+    setGameEndStatus(false);
+    setStatus("Throw dices.");
+    setTotalPoints(0);
+    setBonusPointsStatus(
+      `You are ${BONUS_POINTS_LIMIT} points away from bonus`
+    );
+    diceSpots.fill(0);
+    dicePointsTotal.fill(0);
+    selectedDices.fill(0);
+    selectedDicePoints.fill(0);
   };
 
   const pointsRow = [];
@@ -126,15 +224,31 @@ export default function Gameboard({ navigation, route }) {
 
   const dicesRow = [];
   for (let dice = 0; dice < NBR_OF_DICES; dice++) {
+    const isSelected = selectedDices[dice];
     dicesRow.push(
       <Col key={"dice" + dice}>
         <Pressable key={"dice" + dice} onPress={() => selectDice(dice)}>
-          <MaterialCommunityIcons
-            name={board[dice]}
-            key={"dice" + dice}
-            size={50}
-            color={getDiceColor(dice)}
-          />
+          {isSelected ? (
+            // Render a static dice for selected dices
+            <MaterialCommunityIcons
+              name={board[dice]}
+              key={"dice" + dice}
+              size={50}
+              color={getDiceColor(dice)}
+            />
+          ) : (
+            // Render animated dice for unselected dices
+            <Animated.View
+              style={[{ transform: [{ rotateY: interpolatedRotateY }] }]}
+            >
+              <MaterialCommunityIcons
+                name={board[dice]}
+                key={"dice" + dice}
+                size={50}
+                color={getDiceColor(dice)}
+              />
+            </Animated.View>
+          )}
         </Pressable>
       </Col>
     );
@@ -163,26 +277,54 @@ export default function Gameboard({ navigation, route }) {
     <>
       <Header />
       <View style={Style.gameContainer}>
-        <Container fluid>
-          <Row style={Style.row}>{dicesRow}</Row>
-        </Container>
+        {!gameStartStatus ? (
+          <>
+            <MaterialCommunityIcons
+              name="dice-multiple"
+              size={190}
+              color={ColorScheme.colors.iconColorPrimary}
+            />
+          </>
+        ) : (
+          <Container fluid>
+            <Row style={Style.row}>{dicesRow}</Row>
+          </Container>
+        )}
         <Text style={Style.headingTextPrimary}>
           Throws left: {nbrOfThrowsLeft}
         </Text>
         <Text style={Style.headingTextPrimary}>{status}</Text>
-
+        <View style={Style.throwDicesButton}>
+          <Button
+            buttonColor={
+              !gameEndStatus
+                ? ColorScheme.colors.iconColorPrimary
+                : ColorScheme.colors.iconColorQuaternary
+            }
+            icon={
+              !gameEndStatus
+                ? require("../assets/yahzee-cup-50.png")
+                : "restart"
+            }
+            mode="contained"
+            onPress={() => (!gameEndStatus ? throwDices() : resetGameState())}
+          >
+            {!gameEndStatus ? "THROW DICES" : "RESTART"}
+          </Button>
+          <View>
+            <Text style={Style.headingTextPrimary}>TOTAL: {totalPoints}</Text>
+            <Text style={Style.headingTextPrimary}>{bonusPointsStatus}</Text>
+          </View>
+        </View>
         <Container fluid>
           <Row>{pointsRow}</Row>
         </Container>
         <Container fluid>
           <Row>{pointsToSelectRow}</Row>
         </Container>
-
-        <Pressable style={Style.button} onPress={() => throwDices()}>
-          <Text style={Style.buttonText}>THROW DICES</Text>
-        </Pressable>
         <Text style={Style.headingTextPrimary}>Player: {playerName}</Text>
       </View>
+
       <Footer />
     </>
   );

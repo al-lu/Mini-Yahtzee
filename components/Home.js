@@ -13,6 +13,7 @@ import {
 } from "../constants/Game";
 import Style from "../styles/Style";
 import { ColorScheme } from "../colors/ColorScheme";
+import { Button } from "react-native-paper";
 
 export default function Home({ navigation }) {
   const [playerName, setPlayerName] = useState("");
@@ -46,12 +47,13 @@ export default function Home({ navigation }) {
               autoFocus={true}
               mode="outlined"
             />
-            <Pressable
+            <Button
               style={Style.button}
+              mode="contained"
               onPress={() => handlePlayerName(playerName)}
             >
-              <Text style={Style.buttonText}>OK</Text>
-            </Pressable>
+              OK
+            </Button>
           </>
         ) : (
           <>
@@ -88,14 +90,15 @@ export default function Home({ navigation }) {
             <Text style={Style.headingTextPrimary}>
               Good luck, {playerName}
             </Text>
-            <Pressable
+            <Button
               style={Style.button}
+              mode="contained"
               onPress={() =>
                 navigation.navigate("Gameboard", { player: playerName })
               }
             >
-              <Text style={Style.buttonText}>PLAY</Text>
-            </Pressable>
+              PLAY
+            </Button>
           </>
         )}
       </View>
