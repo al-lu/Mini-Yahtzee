@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { Text, View, Pressable, Animated } from "react-native";
 import { useEffect, useState } from "react";
 import Header from "./Header";
@@ -6,16 +6,19 @@ import Footer from "./Footer";
 import {
   NBR_OF_DICES,
   NBR_OF_THROWS,
-  MIN_SPOT,
   MAX_SPOT,
   BONUS_POINTS_LIMIT,
   BONUS_POINTS,
+  SCOREBOARD_KEY,
 } from "../constants/Game";
 import { Container, Row, Col } from "react-native-flex-grid";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Style from "../styles/Style";
 import { ColorScheme } from "../colors/ColorScheme";
 import { Button } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 let board = [];
 
@@ -24,7 +27,7 @@ export default function Gameboard({ navigation, route }) {
   const [playerName, setPlayerName] = useState("");
   const [nbrOfThrowsLeft, setNbrOfThrowsLeft] = useState(NBR_OF_THROWS);
   const [bonusPointsStatus, setBonusPointsStatus] = useState(
-    `You are ${BONUS_POINTS_LIMIT} points away from bonus`
+    `You are ${BONUS_POINTS_LIMIT} points away from bonus.`
   );
   const [status, setStatus] = useState("Start the game by throwing dices.");
   const [gameStartStatus, setGameStartStatus] = useState(false);
@@ -39,14 +42,17 @@ export default function Gameboard({ navigation, route }) {
   const [dicePointsTotal, setDicePointsTotal] = useState(
     new Array(MAX_SPOT).fill(0)
   );
+  const [gameScores, setGameScores] = useState([]);
   const [totalPoints, setTotalPoints] = useState(0);
   const [animatedValue] = useState(new Animated.Value(0));
 
+  // Rotate dices
   const interpolatedRotateY = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "360deg"],
   });
 
+  // Animate dice rolls
   const startAnimation = (i) => {
     const animationSequence = Animated.sequence([
       Animated.timing(animatedValue, {
@@ -71,6 +77,14 @@ export default function Gameboard({ navigation, route }) {
     }
   }, []);
 
+  // Read from Asyncstorage when pening gameboard or scoreboard
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      fetchScoreboardData();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   // Update state after dice selection
   useEffect(() => {
     const updateStateAfterDiceSelection = () => {
@@ -83,12 +97,12 @@ export default function Gameboard({ navigation, route }) {
       if (remainingPointsToBonus > 0) {
         setTotalPoints(totalPoints);
         setBonusPointsStatus(
-          `You are ${remainingPointsToBonus} points away from bonus`
+          `You are ${remainingPointsToBonus} points away from bonus.`
         );
       } else {
         const newTotalPoints = totalPoints + BONUS_POINTS;
         setTotalPoints(newTotalPoints);
-        setBonusPointsStatus(`Congrats! Bonus points (50) added`);
+        setBonusPointsStatus(`Congrats! Bonus points (50) added.`);
       }
 
       const isEveryPointSelected = selectedDicePoints.every(
@@ -108,25 +122,26 @@ export default function Gameboard({ navigation, route }) {
   // Updates the game status to "GAME OVER" when all points are selected
   useEffect(() => {
     if (gameEndStatus) {
+      saveGameData();
       setStatus("GAME OVER. All points selected.");
     }
   }, [gameEndStatus]);
 
-  // Returns the color for a dice based on its selection state
+  // Color for a dice
   const getDiceColor = (i) => {
     return selectedDices[i]
       ? ColorScheme.colors.iconColorPrimary
       : ColorScheme.colors.iconColorSecondary;
   };
 
-  // Returns the color for a dicePoint based on its selection state and game end status
+  // Color for a dicePoint
   const getDicePointsColor = (i) => {
     return selectedDicePoints[i] && !gameEndStatus
       ? ColorScheme.colors.iconColorTertiary
       : ColorScheme.colors.iconColorSecondary;
   };
 
-  // Returns the total number of spots rolled for a specific point value
+  // Total number of spots rolled for a specific point value
   const getSpotTotal = (i) => {
     return dicePointsTotal[i];
   };
@@ -142,7 +157,7 @@ export default function Gameboard({ navigation, route }) {
     }
   };
 
-  // Handles selecting a dice point and updates its selection state and points total
+  // Handle selecting a dice point and updates its selection state and points total
   const selectDicePoints = (i) => {
     if (nbrOfThrowsLeft === 0) {
       let selectedPoints = [...selectedDicePoints];
@@ -159,7 +174,7 @@ export default function Gameboard({ navigation, route }) {
         setNbrOfThrowsLeft(NBR_OF_THROWS);
         return points[i];
       } else {
-        setStatus("You already selected points for " + (i + 1));
+        setStatus("You already selected points for " + (i + 1) + ".");
       }
     } else {
       setStatus("Throw " + NBR_OF_THROWS + " times before setting points.");
@@ -203,12 +218,47 @@ export default function Gameboard({ navigation, route }) {
     setStatus("Throw dices.");
     setTotalPoints(0);
     setBonusPointsStatus(
-      `You are ${BONUS_POINTS_LIMIT} points away from bonus`
+      `You are ${BONUS_POINTS_LIMIT} points away from bonus.`
     );
     diceSpots.fill(0);
     dicePointsTotal.fill(0);
     selectedDices.fill(0);
     selectedDicePoints.fill(0);
+  };
+
+  const saveGameData = async () => {
+    const time = new Date();
+    const date = `${time.getDate()}.${
+      time.getMonth() + 1
+    }.${time.getFullYear()}`;
+    const currentTime = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+
+    const uniqueKey = uuidv4();
+    const saveData = {
+      key: uniqueKey,
+      name: playerName,
+      date,
+      time: currentTime,
+      points: totalPoints,
+    };
+
+    try {
+      const newScore = [...gameScores, saveData];
+      const jsonValue = JSON.stringify(newScore);
+      await AsyncStorage.setItem(SCOREBOARD_KEY, jsonValue);
+    } catch (error) {
+      console.error("Error while saving game data: ", error);
+    }
+  };
+
+  const fetchScoreboardData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(SCOREBOARD_KEY);
+      const gameScores = jsonValue ? JSON.parse(jsonValue) : [];
+      setGameScores(gameScores);
+    } catch (error) {
+      console.error("Error while fetching scoreboard data:", error);
+    }
   };
 
   const pointsRow = [];
@@ -224,6 +274,7 @@ export default function Gameboard({ navigation, route }) {
 
   const dicesRow = [];
   for (let dice = 0; dice < NBR_OF_DICES; dice++) {
+    // Only animate unselected dices
     const isSelected = selectedDices[dice];
     dicesRow.push(
       <Col key={"dice" + dice}>

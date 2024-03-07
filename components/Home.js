@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Keyboard, Pressable, Text, TextInput, View } from "react-native";
+import { Keyboard, Text, TextInput, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Header from "./Header";
 import Footer from "./Footer";

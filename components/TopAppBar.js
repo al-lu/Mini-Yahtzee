@@ -3,7 +3,7 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import Style from "../styles/Style";
 import { Image } from "react-native";
 
-function TopAppBar({ route, options }) {
+export default function TopAppBar({ route, options }) {
   const title = getHeaderTitle(options, route.name);
 
   return (
@@ -19,5 +19,3 @@ function TopAppBar({ route, options }) {
     </Appbar.Header>
   );
 }
-
-export default TopAppBar;
