@@ -14,6 +14,7 @@ import {
 import Style from "../styles/Style";
 import { ColorScheme } from "../colors/ColorScheme";
 import { Button } from "react-native-paper";
+import { moderateScale } from "./Metrics";
 
 export default function Home({ navigation }) {
   const [playerName, setPlayerName] = useState("");
@@ -27,14 +28,14 @@ export default function Home({ navigation }) {
   };
 
   return (
-    <>
+    <View style={Style.container}>
       <Header />
       <View style={Style.gameInfoView}>
         {!hasPlayerName ? (
           <>
             <MaterialCommunityIcons
               name="alert-circle-outline"
-              size={90}
+              size={moderateScale(78)}
               color={ColorScheme.colors.iconColorPrimary}
               style={Style.gameInfoIcon}
             />
@@ -59,7 +60,7 @@ export default function Home({ navigation }) {
           <>
             <MaterialCommunityIcons
               name="alert-circle-check-outline"
-              size={90}
+              size={moderateScale(78)}
               color={ColorScheme.colors.iconColorPrimary}
               style={Style.gameInfoIcon}
             />
@@ -87,11 +88,12 @@ export default function Home({ navigation }) {
                 getting bonus which gives you {BONUS_POINTS} points more.
               </Text>
             </View>
-            <Text style={Style.headingTextPrimary}>
+            <Text style={Style.headingTextTertiary}>
               Good luck, {playerName}
             </Text>
             <Button
               style={Style.button}
+              labelStyle={{ fontSize: moderateScale(15) }}
               mode="contained"
               onPress={() =>
                 navigation.navigate("Gameboard", { player: playerName })
@@ -103,6 +105,6 @@ export default function Home({ navigation }) {
         )}
       </View>
       <Footer />
-    </>
+    </View>
   );
 }

@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { ColorScheme } from "../colors/ColorScheme";
 import TopAppBar from "./TopAppBar";
+import { moderateScale, verticalScale } from "./Metrics";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +32,7 @@ export default function Navigation() {
             return (
               <MaterialCommunityIcons
                 name={iconName}
-                size={size}
+                size={moderateScale(35)}
                 color={color}
               />
             );
@@ -42,7 +43,9 @@ export default function Navigation() {
             ColorScheme.colors.tabBarActiveBackgroundColor,
           tabBarStyle: {
             backgroundColor: ColorScheme.colors.tabBarBackgroundColor,
+            height: verticalScale(55),
           },
+          tabBarLabelStyle: { fontSize: moderateScale(11) },
         })}
       >
         <Tab.Screen

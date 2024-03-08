@@ -15,10 +15,11 @@ import { Container, Row, Col } from "react-native-flex-grid";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Style from "../styles/Style";
 import { ColorScheme } from "../colors/ColorScheme";
-import { Button } from "react-native-paper";
+import { Button, Icon } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
+import { moderateScale } from "./Metrics";
 
 let board = [];
 
@@ -77,7 +78,7 @@ export default function Gameboard({ navigation, route }) {
     }
   }, []);
 
-  // Read from Asyncstorage when pening gameboard or scoreboard
+  // Read from Asyncstorage when opening gameboard or scoreboard
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       fetchScoreboardData();
@@ -186,7 +187,7 @@ export default function Gameboard({ navigation, route }) {
     setGameStartStatus(true);
 
     if (nbrOfThrowsLeft === 0 && !gameEndStatus) {
-      setStatus("Select your points before the next throw.");
+      setStatus("Select points before the next throw.");
       return 1;
     } else if (nbrOfThrowsLeft === 0 && gameEndStatus) {
       setGameEndStatus(false);
@@ -284,7 +285,7 @@ export default function Gameboard({ navigation, route }) {
             <MaterialCommunityIcons
               name={board[dice]}
               key={"dice" + dice}
-              size={50}
+              size={moderateScale(52)}
               color={getDiceColor(dice)}
             />
           ) : (
@@ -295,7 +296,7 @@ export default function Gameboard({ navigation, route }) {
               <MaterialCommunityIcons
                 name={board[dice]}
                 key={"dice" + dice}
-                size={50}
+                size={moderateScale(52)}
                 color={getDiceColor(dice)}
               />
             </Animated.View>
@@ -308,7 +309,7 @@ export default function Gameboard({ navigation, route }) {
   const pointsToSelectRow = [];
   for (let diceButton = 0; diceButton < MAX_SPOT; diceButton++) {
     pointsToSelectRow.push(
-      <Col key={"buttonsRow" + diceButton}>
+      <Col style={Style.pointsToSelectRow} key={"buttonsRow" + diceButton}>
         <Pressable
           key={"buttonsRow" + diceButton}
           onPress={() => selectDicePoints(diceButton)}
@@ -316,7 +317,7 @@ export default function Gameboard({ navigation, route }) {
           <MaterialCommunityIcons
             name={"numeric-" + (diceButton + 1) + "-circle"}
             key={"buttonsRow" + diceButton}
-            size={45}
+            size={moderateScale(35)}
             color={getDicePointsColor(diceButton)}
           />
         </Pressable>
@@ -332,39 +333,50 @@ export default function Gameboard({ navigation, route }) {
           <>
             <MaterialCommunityIcons
               name="dice-multiple"
-              size={190}
+              size={moderateScale(100)}
               color={ColorScheme.colors.iconColorPrimary}
             />
           </>
         ) : (
           <Container fluid>
-            <Row style={Style.row}>{dicesRow}</Row>
+            <Row style={Style.dicesRow}>{dicesRow}</Row>
           </Container>
         )}
-        <Text style={Style.headingTextPrimary}>
+        <Text style={Style.gameboardHeadingTextPrimary}>
           Throws left: {nbrOfThrowsLeft}
         </Text>
-        <Text style={Style.headingTextPrimary}>{status}</Text>
+        <Text style={Style.gameboardSubHeadingText}>{status}</Text>
         <View style={Style.throwDicesButton}>
           <Button
+            labelStyle={{ fontSize: moderateScale(15) }}
+            mode="contained"
             buttonColor={
               !gameEndStatus
-                ? ColorScheme.colors.iconColorPrimary
+                ? ColorScheme.colors.buttonColorPrimary
                 : ColorScheme.colors.iconColorQuaternary
             }
-            icon={
-              !gameEndStatus
-                ? require("../assets/yahzee-cup-50.png")
-                : "restart"
-            }
-            mode="contained"
+            icon={(p) => (
+              <Icon
+                {...p}
+                source={
+                  !gameEndStatus
+                    ? require("../assets/yahzee-cup-50.png")
+                    : "restart"
+                }
+                size={moderateScale(28)}
+              />
+            )}
             onPress={() => (!gameEndStatus ? throwDices() : resetGameState())}
           >
             {!gameEndStatus ? "THROW DICES" : "RESTART"}
           </Button>
           <View>
-            <Text style={Style.headingTextPrimary}>TOTAL: {totalPoints}</Text>
-            <Text style={Style.headingTextPrimary}>{bonusPointsStatus}</Text>
+            <Text style={Style.gameboardHeadingTextSecondary}>
+              TOTAL: {totalPoints}
+            </Text>
+            <Text style={Style.gameboardSubHeadingText}>
+              {bonusPointsStatus}
+            </Text>
           </View>
         </View>
         <Container fluid>
@@ -373,7 +385,7 @@ export default function Gameboard({ navigation, route }) {
         <Container fluid>
           <Row>{pointsToSelectRow}</Row>
         </Container>
-        <Text style={Style.headingTextPrimary}>Player: {playerName}</Text>
+        <Text style={Style.gameboardPlayerName}>Player: {playerName}</Text>
       </View>
 
       <Footer />

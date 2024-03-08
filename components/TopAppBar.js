@@ -1,7 +1,8 @@
 import { Appbar, Icon } from "react-native-paper";
 import { getHeaderTitle } from "@react-navigation/elements";
 import Style from "../styles/Style";
-import { Image } from "react-native";
+import { Image, View } from "react-native";
+import { horizontalScale, verticalScale } from "./Metrics";
 
 export default function TopAppBar({ route, options }) {
   const title = getHeaderTitle(options, route.name);
@@ -12,10 +13,12 @@ export default function TopAppBar({ route, options }) {
         title={title}
         titleStyle={Style.topAppBarTitleText}
       ></Appbar.Content>
-      <Image
-        style={Style.yahtzeeDicesImage}
-        source={require("../assets/yahtzee-dices-90.png")}
-      />
+      <View style={Style.yahtzeeDicesImagesView}>
+        <Image
+          style={Style.yahtzeeDicesImages}
+          source={require("../assets/yahtzee-dices-90.png")}
+        />
+      </View>
     </Appbar.Header>
   );
 }

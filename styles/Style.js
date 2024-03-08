@@ -1,13 +1,17 @@
 import { StyleSheet } from "react-native";
 import { ColorScheme } from "../colors/ColorScheme";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../components/Metrics";
 
 export default StyleSheet.create({
   // Main container
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
+    height: verticalScale(70),
+    width: horizontalScale(376),
   },
 
   backgroundGradient: {
@@ -17,28 +21,39 @@ export default StyleSheet.create({
   // TopAppBar
   topAppBar: {
     backgroundColor: ColorScheme.colors.topAppBarBackgroundColor,
+    height: verticalScale(70),
   },
 
   topAppBarTitleText: {
     color: ColorScheme.colors.textColorPrimary,
+    fontSize: moderateScale(21),
+    fontWeight: "600",
   },
 
-  yahtzeeDicesImage: { marginRight: 20 },
+  yahtzeeDicesImagesView: {
+    flex: 0.5,
+  },
+  yahtzeeDicesImages: {
+    height: verticalScale(50),
+    width: horizontalScale(90),
+  },
 
   // Header Main
   header: {
     backgroundColor: ColorScheme.colors.backgroundColorPrimary,
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     borderColor: ColorScheme.colors.borderColor,
     borderWidth: 3,
-    flexDirection: "row",
+    height: verticalScale(50),
+    width: horizontalScale(373),
   },
 
   // Header Title
   title: {
     fontFamily: "Righteous-Regular",
-    fontSize: 30,
+    fontSize: moderateScale(27),
     color: ColorScheme.colors.textColorPrimary,
     textShadowColor: "black",
     textShadowRadius: 1,
@@ -50,7 +65,8 @@ export default StyleSheet.create({
 
   // Footer Main
   footer: {
-    width: "100%",
+    height: verticalScale(35),
+    width: horizontalScale(373),
     backgroundColor: ColorScheme.colors.backgroundColorPrimary,
     borderColor: ColorScheme.colors.borderColor,
     borderWidth: 3,
@@ -63,7 +79,7 @@ export default StyleSheet.create({
   // Footer Author
   author: {
     fontFamily: "Righteous-Regular",
-    fontSize: 20,
+    fontSize: moderateScale(18),
     color: ColorScheme.colors.textColorPrimary,
     textShadowColor: "black",
     textShadowRadius: 1,
@@ -80,69 +96,75 @@ export default StyleSheet.create({
   },
 
   gameInfoIcon: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: verticalScale(20),
+    marginBottom: verticalScale(10),
   },
 
   headingTextPrimary: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: moderateScale(18),
     textAlign: "center",
     color: ColorScheme.colors.textColorPrimary,
-    marginTop: 20,
+    marginTop: verticalScale(10),
   },
 
   headingTextSecondary: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: moderateScale(18),
     textAlign: "center",
     color: ColorScheme.colors.textColorSecondary,
-    marginVertical: 15,
+    marginVertical: verticalScale(15),
+  },
+
+  headingTextTertiary: {
+    fontWeight: "bold",
+    fontSize: moderateScale(18),
+    textAlign: "center",
+    color: ColorScheme.colors.textColorPrimary,
+    marginTop: verticalScale(15),
   },
 
   playerNameTextInput: {
-    width: "80%",
+    height: verticalScale(35),
+    width: horizontalScale(310),
     backgroundColor: ColorScheme.colors.textInputBackgroundColorPrimary,
     borderRadius: 50,
+    marginTop: verticalScale(15),
     textAlign: "center",
+    fontSize: moderateScale(18),
   },
 
   button: {
-    flexDirection: "row",
-    padding: 10,
-    backgroundColor: ColorScheme.colors.iconColorPrimary,
-    borderRadius: 15,
+    marginTop: verticalScale(13),
+    marginBottom: verticalScale(40),
+    width: horizontalScale(120),
+    height: verticalScale(50),
     justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15,
-  },
-
-  buttonText: {
-    color: ColorScheme.colors.textColorPrimary,
-    fontSize: 15,
-    fontWeight: "bold",
+    backgroundColor: ColorScheme.colors.buttonColorPrimary,
   },
 
   // GameRules
   gameRulesView: {
     backgroundColor: ColorScheme.colors.backGroundColorSecondary,
     borderRadius: 10,
-    marginLeft: 20,
-    marginRight: 20,
-    paddingBottom: 30,
-    paddingLeft: 10,
-    paddingRight: 10,
+    marginLeft: horizontalScale(17),
+    marginRight: horizontalScale(17),
+    paddingBottom: verticalScale(20),
   },
 
   gameRulesText: {
     textAlign: "justify",
     color: ColorScheme.colors.textColorSecondary,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 10,
+    paddingLeft: horizontalScale(15),
+    paddingRight: horizontalScale(15),
+    marginTop: verticalScale(10),
+    fontSize: moderateScale(13),
   },
 
-  subHeading: { fontWeight: "bold" },
+  subHeading: {
+    fontWeight: "bold",
+    fontSize: moderateScale(12.3),
+  },
 
   // GameBoard
   gameContainer: {
@@ -150,22 +172,120 @@ export default StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "column",
+    height: verticalScale(70),
+    width: horizontalScale(376),
   },
 
-  row: {
-    marginTop: 20,
-    padding: 10,
+  gameboardHeadingTextPrimary: {
+    fontWeight: "600",
+    fontSize: moderateScale(25),
+    textAlign: "center",
+    color: ColorScheme.colors.textColorPrimary,
+    marginTop: verticalScale(15),
+    textShadowColor: "black",
+    textShadowRadius: 1,
+    textShadowOffset: {
+      width: 1,
+      height: 1,
+    },
+  },
+
+  gameboardHeadingTextSecondary: {
+    fontWeight: "600",
+    fontSize: moderateScale(25),
+    textAlign: "center",
+    color: ColorScheme.colors.textColorPrimary,
+    marginTop: verticalScale(25),
+    textShadowColor: "black",
+    textShadowRadius: 1,
+    textShadowOffset: {
+      width: 1,
+      height: 1,
+    },
+  },
+
+  gameboardSubHeadingText: {
+    fontWeight: "bold",
+    fontSize: moderateScale(18),
+    textAlign: "center",
+    color: ColorScheme.colors.textColorPrimary,
+    marginTop: verticalScale(10),
+    textShadowColor: "black",
+    textShadowRadius: 1,
+    textShadowOffset: {
+      width: 1,
+      height: 1,
+    },
+  },
+
+  pointsToSelectRow: {
+    alignItems: "center",
+  },
+
+  dicesRow: {
+    marginTop: verticalScale(25),
   },
 
   pointsRowText: {
     color: ColorScheme.colors.textColorSecondary,
     textAlign: "center",
-    fontSize: 30,
-    marginBottom: 5,
+    fontSize: moderateScale(25),
+    marginBottom: verticalScale(3),
   },
 
   throwDicesButton: {
-    marginTop: 20,
-    marginBottom: 40,
+    marginTop: verticalScale(30),
+    marginBottom: verticalScale(40),
+  },
+
+  gameboardPlayerName: {
+    fontWeight: "bold",
+    fontSize: moderateScale(20),
+    textAlign: "center",
+    color: ColorScheme.colors.textColorPrimary,
+    marginTop: verticalScale(15),
+    textShadowColor: "black",
+    textShadowRadius: 1,
+    textShadowOffset: {
+      width: 1,
+      height: 1,
+    },
+  },
+
+  // Scoreboard
+  scoreboardDatatable: {
+    marginLeft: horizontalScale(10),
+    marginRight: horizontalScale(10),
+    marginBottom: verticalScale(30),
+  },
+
+  headingTextScoreboardPrimary: {
+    fontWeight: "bold",
+    fontSize: moderateScale(22),
+    textAlign: "center",
+    color: ColorScheme.colors.textColorPrimary,
+    marginBottom: verticalScale(18),
+  },
+
+  dataTableTextHeading: {
+    color: ColorScheme.colors.textColorSecondary,
+    fontWeight: "bold",
+    fontSize: moderateScale(14),
+  },
+
+  dataTableText: {
+    color: ColorScheme.colors.textColorSecondary,
+    fontWeight: "600",
+    fontSize: moderateScale(13),
+  },
+
+  dataTableHeader: {
+    backgroundColor: ColorScheme.colors.dataTableHeaderBackground,
+    borderBottomColor: ColorScheme.colors.borderColor,
+    borderBottomWidth: 3,
+  },
+  dataTableRow: {
+    borderBottomColor: ColorScheme.colors.borderColor,
+    borderBottomWidth: 1,
   },
 });
