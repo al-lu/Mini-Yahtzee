@@ -120,6 +120,13 @@ export default function Gameboard({ navigation, route }) {
     }
   }, [selectedDicePoints]);
 
+  // Avoid one step behind problem
+  useEffect(() => {
+    if (nbrOfThrowsLeft < 0) {
+      setNbrOfThrowsLeft(NBR_OF_THROWS - 1);
+    }
+  }, [nbrOfThrowsLeft]);
+
   // Updates the game status to "GAME OVER" when all points are selected
   useEffect(() => {
     if (gameEndStatus) {
