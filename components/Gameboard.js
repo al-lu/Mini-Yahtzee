@@ -292,7 +292,7 @@ export default function Gameboard({ navigation, route }) {
             <MaterialCommunityIcons
               name={board[dice]}
               key={"dice" + dice}
-              size={moderateScale(52)}
+              size={moderateScale(47)}
               color={getDiceColor(dice)}
             />
           ) : (
@@ -303,7 +303,7 @@ export default function Gameboard({ navigation, route }) {
               <MaterialCommunityIcons
                 name={board[dice]}
                 key={"dice" + dice}
-                size={moderateScale(52)}
+                size={moderateScale(47)}
                 color={getDiceColor(dice)}
               />
             </Animated.View>
@@ -340,7 +340,7 @@ export default function Gameboard({ navigation, route }) {
           <>
             <MaterialCommunityIcons
               name="dice-multiple"
-              size={moderateScale(100)}
+              size={moderateScale(75)}
               color={ColorScheme.colors.iconColorPrimary}
             />
           </>
@@ -355,7 +355,7 @@ export default function Gameboard({ navigation, route }) {
         <Text style={Style.gameboardSubHeadingText}>{status}</Text>
         <View style={Style.throwDicesButton}>
           <Button
-            labelStyle={{ fontSize: moderateScale(15) }}
+            labelStyle={{ fontSize: moderateScale(12.5) }}
             mode="contained"
             buttonColor={
               !gameEndStatus

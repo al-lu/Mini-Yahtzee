@@ -136,7 +136,7 @@ export default function ScoreBoard({ navigation }) {
               buttonColor={ColorScheme.colors.iconColorQuaternary}
               textColor={ColorScheme.colors.textColorPrimary}
               style={{ width: horizontalScale(320), alignSelf: "center" }}
-              labelStyle={{ fontSize: moderateScale(15) }}
+              labelStyle={{ fontSize: moderateScale(12.5) }}
               mode="contained"
               onPress={() => clearScoreboardData()}
             >

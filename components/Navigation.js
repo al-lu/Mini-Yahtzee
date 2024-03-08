@@ -32,7 +32,7 @@ export default function Navigation() {
             return (
               <MaterialCommunityIcons
                 name={iconName}
-                size={moderateScale(35)}
+                size={moderateScale(25)}
                 color={color}
               />
             );

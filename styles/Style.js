@@ -105,7 +105,7 @@ export default StyleSheet.create({
 
   headingTextPrimary: {
     fontWeight: "bold",
-    fontSize: moderateScale(18),
+    fontSize: moderateScale(14),
     textAlign: "center",
     color: ColorScheme.colors.textColorPrimary,
     marginTop: verticalScale(10),
@@ -113,7 +113,7 @@ export default StyleSheet.create({
 
   headingTextSecondary: {
     fontWeight: "bold",
-    fontSize: moderateScale(18),
+    fontSize: moderateScale(14),
     textAlign: "center",
     color: ColorScheme.colors.textColorSecondary,
     marginVertical: verticalScale(15),
@@ -121,7 +121,7 @@ export default StyleSheet.create({
 
   headingTextTertiary: {
     fontWeight: "bold",
-    fontSize: moderateScale(18),
+    fontSize: moderateScale(14),
     textAlign: "center",
     color: ColorScheme.colors.textColorPrimary,
     marginTop: verticalScale(15),
@@ -158,12 +158,12 @@ export default StyleSheet.create({
     paddingLeft: horizontalScale(15),
     paddingRight: horizontalScale(15),
     marginTop: verticalScale(10),
-    fontSize: moderateScale(13),
+    fontSize: moderateScale(10),
   },
 
   subHeading: {
     fontWeight: "bold",
-    fontSize: moderateScale(12.3),
+    fontSize: moderateScale(10.5),
   },
 
   // GameBoard
@@ -178,7 +178,7 @@ export default StyleSheet.create({
 
   gameboardHeadingTextPrimary: {
     fontWeight: "600",
-    fontSize: moderateScale(25),
+    fontSize: moderateScale(18),
     textAlign: "center",
     color: ColorScheme.colors.textColorPrimary,
     marginTop: verticalScale(15),
@@ -192,7 +192,7 @@ export default StyleSheet.create({
 
   gameboardHeadingTextSecondary: {
     fontWeight: "600",
-    fontSize: moderateScale(25),
+    fontSize: moderateScale(18),
     textAlign: "center",
     color: ColorScheme.colors.textColorPrimary,
     marginTop: verticalScale(25),
@@ -206,7 +206,7 @@ export default StyleSheet.create({
 
   gameboardSubHeadingText: {
     fontWeight: "bold",
-    fontSize: moderateScale(18),
+    fontSize: moderateScale(14),
     textAlign: "center",
     color: ColorScheme.colors.textColorPrimary,
     marginTop: verticalScale(10),
@@ -229,7 +229,7 @@ export default StyleSheet.create({
   pointsRowText: {
     color: ColorScheme.colors.textColorSecondary,
     textAlign: "center",
-    fontSize: moderateScale(25),
+    fontSize: moderateScale(18),
     marginBottom: verticalScale(3),
   },
 
@@ -240,7 +240,7 @@ export default StyleSheet.create({
 
   gameboardPlayerName: {
     fontWeight: "bold",
-    fontSize: moderateScale(20),
+    fontSize: moderateScale(14),
     textAlign: "center",
     color: ColorScheme.colors.textColorPrimary,
     marginTop: verticalScale(15),

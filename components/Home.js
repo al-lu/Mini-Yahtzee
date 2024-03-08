@@ -52,7 +52,7 @@ export default function Home({ navigation }) {
               buttonColor={ColorScheme.colors.buttonColorPrimary}
               textColor={ColorScheme.colors.textColorPrimary}
               style={Style.button}
-              labelStyle={{ fontSize: moderateScale(15) }}
+              labelStyle={{ fontSize: moderateScale(12.5) }}
               mode="contained"
               onPress={() => handlePlayerName(playerName)}
             >
@@ -63,7 +63,7 @@ export default function Home({ navigation }) {
           <View style={Style.gameInfoView}>
             <MaterialCommunityIcons
               name="alert-circle-check-outline"
-              size={moderateScale(78)}
+              size={moderateScale(60)}
               color={ColorScheme.colors.iconColorPrimary}
               style={Style.gameInfoIcon}
             />
@@ -98,7 +98,7 @@ export default function Home({ navigation }) {
               buttonColor={ColorScheme.colors.buttonColorPrimary}
               textColor={ColorScheme.colors.textColorPrimary}
               style={Style.button}
-              labelStyle={{ fontSize: moderateScale(15) }}
+              labelStyle={{ fontSize: moderateScale(12.5) }}
               mode="contained"
               onPress={() =>
                 navigation.navigate("Gameboard", { player: playerName })
