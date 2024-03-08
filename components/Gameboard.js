@@ -138,7 +138,7 @@ export default function Gameboard({ navigation, route }) {
   // Color for a dice
   const getDiceColor = (i) => {
     return selectedDices[i]
-      ? ColorScheme.colors.iconColorPrimary
+      ? ColorScheme.colors.selectedDiceColor
       : ColorScheme.colors.iconColorSecondary;
   };
 

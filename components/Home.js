@@ -35,7 +35,7 @@ export default function Home({ navigation }) {
           <View style={Style.gameInfoView}>
             <MaterialCommunityIcons
               name="alert-circle-outline"
-              size={moderateScale(78)}
+              size={moderateScale(60)}
               color={ColorScheme.colors.iconColorPrimary}
               style={Style.gameInfoIcon}
             />
