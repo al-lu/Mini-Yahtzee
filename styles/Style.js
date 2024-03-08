@@ -238,6 +238,11 @@ export default StyleSheet.create({
     marginBottom: verticalScale(40),
   },
 
+  playerNameContainer: {
+    flexGrow: 0.3,
+    justifyContent: "center",
+  },
+
   gameboardPlayerName: {
     fontWeight: "bold",
     fontSize: moderateScale(14),

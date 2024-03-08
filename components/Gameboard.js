@@ -392,7 +392,9 @@ export default function Gameboard({ navigation, route }) {
         <Container fluid>
           <Row>{pointsToSelectRow}</Row>
         </Container>
-        <Text style={Style.gameboardPlayerName}>Player: {playerName}</Text>
+        <View style={Style.playerNameContainer}>
+          <Text style={Style.gameboardPlayerName}>Player: {playerName}</Text>
+        </View>
       </View>
 
       <Footer />
