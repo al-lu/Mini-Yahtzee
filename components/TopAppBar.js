@@ -1,8 +1,7 @@
-import { Appbar, Icon } from "react-native-paper";
+import { Appbar } from "react-native-paper";
 import { getHeaderTitle } from "@react-navigation/elements";
 import Style from "../styles/Style";
 import { Image, View } from "react-native";
-import { horizontalScale, verticalScale } from "./Metrics";
 
 export default function TopAppBar({ route, options }) {
   const title = getHeaderTitle(options, route.name);

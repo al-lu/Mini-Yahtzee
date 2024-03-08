@@ -1,4 +1,4 @@
-import React, { useId } from "react";
+import React from "react";
 import { Text, View, Pressable, Animated } from "react-native";
 import { useEffect, useState } from "react";
 import Header from "./Header";
@@ -367,7 +367,7 @@ export default function Gameboard({ navigation, route }) {
                 {...p}
                 source={
                   !gameEndStatus
-                    ? require("../assets/yahzee-cup-50.png")
+                    ? require("../assets/yahtzee-cup-50.png")
                     : "restart"
                 }
                 size={moderateScale(28)}

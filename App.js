@@ -2,10 +2,8 @@ import Navigation from "./components/Navigation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
-import * as SplashScreen from "expo-splash-screen";
 import Style from "./styles/Style";
 import { ColorScheme } from "./colors/ColorScheme";
-import { Text } from "react-native-paper";
 
 export default function App() {
   const [loaded] = useFonts({

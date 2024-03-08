@@ -49,7 +49,10 @@ export default function Home({ navigation }) {
               mode="outlined"
             />
             <Button
+              buttonColor={ColorScheme.colors.buttonColorPrimary}
+              textColor={ColorScheme.colors.textColorPrimary}
               style={Style.button}
+              labelStyle={{ fontSize: moderateScale(15) }}
               mode="contained"
               onPress={() => handlePlayerName(playerName)}
             >
@@ -92,6 +95,8 @@ export default function Home({ navigation }) {
               Good luck, {playerName}
             </Text>
             <Button
+              buttonColor={ColorScheme.colors.buttonColorPrimary}
+              textColor={ColorScheme.colors.textColorPrimary}
               style={Style.button}
               labelStyle={{ fontSize: moderateScale(15) }}
               mode="contained"

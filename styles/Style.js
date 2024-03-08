@@ -11,7 +11,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     height: verticalScale(70),
-    width: horizontalScale(376),
+    width: horizontalScale(378),
   },
 
   backgroundGradient: {
@@ -135,12 +135,9 @@ export default StyleSheet.create({
   },
 
   button: {
-    marginTop: verticalScale(13),
-    marginBottom: verticalScale(40),
     width: horizontalScale(120),
-    height: verticalScale(50),
-    justifyContent: "center",
-    backgroundColor: ColorScheme.colors.buttonColorPrimary,
+    alignSelf: "center",
+    marginTop: verticalScale(13),
   },
 
   // GameRules
