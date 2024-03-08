@@ -43,7 +43,7 @@ export default function ScoreBoard({ navigation }) {
   gameScores.sort((a, b) => b.points - a.points);
 
   return (
-    <View style={Style.container}>
+    <View style={Style.scoreBoardContainer}>
       <Header />
       <View>
         <View style={Style.gameInfoView}>

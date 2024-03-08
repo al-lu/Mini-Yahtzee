@@ -30,9 +30,9 @@ export default function Home({ navigation }) {
   return (
     <View style={Style.container}>
       <Header />
-      <View style={Style.gameInfoView}>
+      <View>
         {!hasPlayerName ? (
-          <>
+          <View style={Style.gameInfoView}>
             <MaterialCommunityIcons
               name="alert-circle-outline"
               size={moderateScale(78)}
@@ -58,9 +58,9 @@ export default function Home({ navigation }) {
             >
               OK
             </Button>
-          </>
+          </View>
         ) : (
-          <>
+          <View style={Style.gameInfoView}>
             <MaterialCommunityIcons
               name="alert-circle-check-outline"
               size={moderateScale(78)}
@@ -106,7 +106,7 @@ export default function Home({ navigation }) {
             >
               PLAY
             </Button>
-          </>
+          </View>
         )}
       </View>
       <Footer />

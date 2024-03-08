@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { ColorScheme } from "../colors/ColorScheme";
 import {
   horizontalScale,
@@ -10,8 +10,11 @@ export default StyleSheet.create({
   // Main container
   container: {
     flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "column",
     height: verticalScale(70),
-    width: horizontalScale(378),
+    width: horizontalScale(376),
   },
 
   backgroundGradient: {
@@ -47,7 +50,7 @@ export default StyleSheet.create({
     borderColor: ColorScheme.colors.borderColor,
     borderWidth: 3,
     height: verticalScale(50),
-    width: horizontalScale(373),
+    width: horizontalScale(375),
   },
 
   // Header Title
@@ -66,7 +69,7 @@ export default StyleSheet.create({
   // Footer Main
   footer: {
     height: verticalScale(35),
-    width: horizontalScale(373),
+    width: horizontalScale(375),
     backgroundColor: ColorScheme.colors.backgroundColorPrimary,
     borderColor: ColorScheme.colors.borderColor,
     borderWidth: 3,
@@ -250,6 +253,14 @@ export default StyleSheet.create({
   },
 
   // Scoreboard
+  scoreBoardContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    flexDirection: "column",
+    alignContent: "center",
+    height: verticalScale(70),
+    width: horizontalScale(376),
+  },
   scoreboardDatatable: {
     marginLeft: horizontalScale(10),
     marginRight: horizontalScale(10),
